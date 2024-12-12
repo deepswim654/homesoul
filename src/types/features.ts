@@ -1,6 +1,7 @@
 export interface NavItem {
-  href: string;
+  href?: string;
   label: string;
+  children?: NavItem[];
 }
 
 export interface FooterLink {

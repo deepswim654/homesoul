@@ -7,10 +7,12 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/constants/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 export const Navigation: FC = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { scrollY } = useScroll();
   
   // Transform values based on scroll
@@ -84,29 +86,61 @@ export const Navigation: FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative px-3 py-2 text-sm font-medium transition-colors duration-300",
-                  isScrolled 
-                    ? "text-gray-600 hover:text-gray-900" 
-                    : "text-gray-100 hover:text-white"
-                )}
+            {NAV_ITEMS.map((item, index) => (
+              <div
+                key={item.href || `dropdown-${index}`}
+                className="relative group"
+                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
+                onMouseLeave={() => setOpenDropdown(null)}
               >
-                {item.label}
-                {pathname === item.href && (
-                  <motion.div
-                    layoutId="navbar-indicator"
+                {item.href ? (
+                  <Link
+                    href={item.href}
                     className={cn(
-                      "absolute inset-0 rounded-lg -z-10",
-                      isScrolled ? "bg-gray-100" : "bg-white/10"
+                      "relative px-3 py-2 text-sm font-medium transition-colors duration-300",
+                      isScrolled 
+                        ? "text-gray-600 hover:text-gray-900" 
+                        : "text-gray-100 hover:text-white"
                     )}
-                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                  />
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    className={cn(
+                      "flex items-center px-3 py-2 text-sm font-medium transition-colors duration-300",
+                      isScrolled 
+                        ? "text-gray-600 hover:text-gray-900" 
+                        : "text-gray-100 hover:text-white"
+                    )}
+                  >
+                    {item.label}
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  </button>
                 )}
-              </Link>
+
+                {/* Invisible bridge to prevent gap */}
+                {item.children && (
+                  <div className="absolute -bottom-2 left-0 right-0 h-2 bg-transparent" />
+                )}
+
+                {/* Dropdown Menu */}
+                {item.children && openDropdown === item.label && (
+                  <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-lg">
+                    <div className="py-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href || ''}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 

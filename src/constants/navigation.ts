@@ -1,6 +1,17 @@
 export const NAV_ITEMS = [
   { href: '/', label: 'Home' },
-  { href: '#features', label: 'Features' },
+  {
+    label: 'Features',
+    children: [
+      { href: '/academy', label: 'Academy' },
+      { href: '/consulting', label: 'Consulting' },
+      { href: '/development-and-construction', label: 'Development and Construction' },
+      { href: '/building-material-supplier', label: 'Building Material Supplier' },
+      { href: '/finance', label: 'Finance' },
+      { href: '/the-dreamers-hub', label: 'The Dreamers Hub' },
+      { href: '/wellbeing', label: 'Wellbeing' },
+    ],
+  },
   { href: '#showcase', label: 'Showcase' },
   { href: '/about', label: 'About' },
 ] as const;
