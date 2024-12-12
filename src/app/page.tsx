@@ -1,11 +1,11 @@
-import { HeroSection, BentoGrid, Showcase } from '@/components/features';
+import { HeroSection, BentoGrid, ServiceShowcase } from '@/components/features';
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <HeroSection />
       <BentoGrid />
-      <Showcase />
+      <ServiceShowcase />
     </div>
   );
 }

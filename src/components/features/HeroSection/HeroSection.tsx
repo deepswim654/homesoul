@@ -4,43 +4,38 @@ import { FC } from 'react';
 import { ArrowRightIcon, PlayCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
-import { OptimizedImage } from '@/components/ui/OptimizedImage';
-import { IMAGES } from '@/constants/images';
+import Image from 'next/image';
 
 export const HeroSection: FC = () => {
   return (
-    <section className="relative min-h-screen">
-      {/* Background Image & Overlay */}
-      <div className="absolute inset-0">
-        <OptimizedImage
-          src={IMAGES.HERO.BACKGROUND}
-          alt="Smart home background"
-          fill
-          className="object-cover object-center"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
+    <section className="relative min-h-screen bg-white overflow-hidden">
+      {/* Background Image Container */}
+      <div className="absolute top-0 right-0 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 h-full left-0 hidden md:block">
+        <div className="relative h-full w-2/5 ml-auto">
+          <Image
+            src="/assets/images/hero/background.png"
+            alt="Sustainable building"
+            fill
+            className="object-contain object-right"
+            priority
+            sizes="40vw"
+          />
+        </div>
       </div>
 
       {/* Content Container */}
-      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-full flex flex-col justify-center pt-32 md:pt-36">
-          <div className="max-w-2xl space-y-8">
+      <div className="relative max-w-7xl mx-auto h-full">
+        <div className="h-full flex flex-col justify-start md:justify-center px-4 sm:px-6 lg:px-8 pt-32 md:pt-36">
+          <div className="max-w-xl relative z-10">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
-                <span className="animate-pulse mr-2">🌱</span>
-                Eco-friendly Living
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/5 text-primary text-sm font-medium border border-primary/10">
+                <span className="mr-2">🌿</span>
+                HomeSoul Ecology
               </span>
             </motion.div>
 
@@ -49,12 +44,13 @@ export const HeroSection: FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="font-heading text-4xl lg:text-5xl font-bold text-white leading-tight"
+              className="font-heading text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mt-8"
             >
-              Transform Your Home Into a{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary">
-                Smart Sanctuary
-              </span>
+              Building Sustainable{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light">
+                Communities
+              </span>{' '}
+              Together
             </motion.h1>
 
             {/* Description */}
@@ -62,11 +58,10 @@ export const HeroSection: FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-base lg:text-lg text-gray-200 leading-relaxed"
+              className="text-base lg:text-lg text-gray-600 leading-relaxed mt-6"
             >
-              Experience the future of living with intelligent energy management. 
-              Save money, reduce your carbon footprint, and enjoy complete control 
-              over your home environment.
+              Join our ecosystem of green innovation, sustainable development, and community growth. 
+              Transform the future of living with expert guidance and comprehensive solutions.
             </motion.p>
 
             {/* Call to Action */}
@@ -74,15 +69,15 @@ export const HeroSection: FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 mt-8"
             >
               <Button variant="primary" size="lg" className="group">
-                <span>Get Started</span>
+                <span>Become a Partner</span>
                 <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button variant="secondary" size="lg" className="group">
                 <PlayCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
-                <span>Watch Demo</span>
+                <span>Watch Overview</span>
               </Button>
             </motion.div>
 
@@ -91,14 +86,14 @@ export const HeroSection: FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="grid grid-cols-3 divide-x divide-gray-700 pt-8"
+              className="grid grid-cols-3 divide-x divide-gray-200 mt-12"
             >
               {stats.map((stat, index) => (
                 <div key={index} className="px-6 first:pl-0">
-                  <div className="font-heading text-xl font-bold text-white">
+                  <div className="font-heading text-xl font-bold text-gray-900">
                     {stat.value}
                   </div>
-                  <div className="text-xs text-gray-400 tracking-wide mt-1">
+                  <div className="text-xs text-gray-500 tracking-wide mt-1">
                     {stat.label}
                   </div>
                 </div>
@@ -112,7 +107,7 @@ export const HeroSection: FC = () => {
 };
 
 const stats = [
-  { value: '30%', label: 'Average Energy Savings' },
-  { value: '24/7', label: 'Smart Monitoring' },
-  { value: '100K+', label: 'Homes Transformed' },
+  { value: '7+', label: 'Green Services' },
+  { value: '$30K+', label: 'Partner Benefits' },
+  { value: '100%', label: 'Sustainable Focus' },
 ];

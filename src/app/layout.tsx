@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Navigation, Footer } from '@/components/common';
 import { siteConfig } from '@/config/site';
 import '@/styles/globals.css';
+import { fonts } from '@/config/fonts'
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={fonts.sans.className}>
       <body className="min-h-screen flex flex-col bg-white">
         <Navigation />
         <main className="flex-grow">

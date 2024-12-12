@@ -15,9 +15,9 @@ const buttonVariants = cva(
           'transform hover:-translate-y-0.5',
         ],
         secondary: [
-          'bg-white/10 backdrop-blur-sm text-white border border-white/20',
-          'hover:bg-white/20 hover:border-white/30',
-          'focus:ring-white',
+          'bg-gray-100 text-gray-900 border border-gray-200',
+          'hover:bg-gray-200 hover:border-gray-300',
+          'focus:ring-gray-400',
           'transform hover:-translate-y-0.5',
         ],
       },

@@ -52,12 +52,8 @@ export const Navigation: FC = () => {
     >
       <motion.div 
         className={cn(
-          "absolute inset-0 backdrop-blur-lg transition-all duration-300",
-          isScrolled 
-            ? "bg-white border-b border-gray-100" 
-            : "bg-black/10"
+          "absolute inset-0 transition-all duration-300 bg-white border-b border-gray-100 shadow",
         )}
-        style={{ opacity: isScrolled ? headerBackgroundOpacity : 1 }}
       />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.nav 
@@ -68,17 +64,9 @@ export const Navigation: FC = () => {
           <motion.div style={{ scale }}>
             <Link 
               href="/" 
-              className={cn(
-                "relative flex items-center space-x-2 text-xl font-bold transition-colors duration-300",
-                isScrolled ? "text-gray-900" : "text-white"
-              )}
+              className="relative flex items-center space-x-2 text-xl font-bold text-gray-900"
             >
-              <span className={cn(
-                "transition-colors duration-300",
-                isScrolled 
-                  ? "bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent" 
-                  : "text-white"
-              )}>
+              <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
                 HomeSoul
               </span>
             </Link>
@@ -96,23 +84,13 @@ export const Navigation: FC = () => {
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className={cn(
-                      "relative px-3 py-2 text-sm font-medium transition-colors duration-300",
-                      isScrolled 
-                        ? "text-gray-600 hover:text-gray-900" 
-                        : "text-gray-100 hover:text-white"
-                    )}
+                    className="relative px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-300"
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <button
-                    className={cn(
-                      "flex items-center px-3 py-2 text-sm font-medium transition-colors duration-300",
-                      isScrolled 
-                        ? "text-gray-600 hover:text-gray-900" 
-                        : "text-gray-100 hover:text-white"
-                    )}
+                    className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-300"
                   >
                     {item.label}
                     <ChevronDown className="ml-1 h-4 w-4" />
@@ -150,24 +128,16 @@ export const Navigation: FC = () => {
             style={{ scale }}
           >
             <Button 
-              variant={isScrolled ? "secondary" : "ghost"}
+              variant="secondary"
               size="sm"
-              className={cn(
-                "transition-colors duration-300",
-                isScrolled ? "text-gray-700 hover:text-gray-900" : "text-white"
-              )}
+              className="text-gray-700 hover:text-gray-900"
             >
               Log in
             </Button>
             <Button 
               variant="primary" 
               size="sm"
-              className={cn(
-                "transition-all duration-300",
-                isScrolled 
-                  ? "shadow-lg shadow-primary/20 hover:shadow-primary/30"
-                  : "bg-white text-gray-900 hover:bg-gray-100"
-              )}
+              className="shadow-lg shadow-primary/20 hover:shadow-primary/30"
             >
               Get Started
             </Button>
