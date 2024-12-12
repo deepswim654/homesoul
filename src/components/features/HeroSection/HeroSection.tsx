@@ -51,7 +51,7 @@ export const HeroSection: FC = () => {
               transition={{ delay: 0.3 }}
               className="font-heading text-4xl lg:text-5xl font-bold text-white leading-tight"
             >
-              Transform Your Home Into a{' '}
+              Transformm Your Home Into a{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-primary">
                 Smart Sanctuary
               </span>
