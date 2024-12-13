@@ -5,9 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #10B981;    
-  --primary-light: #34D399;  
-  --primary-dark: #059669;   
+  --primary: #00A171;    
+  --primary-light: #00B784;  
+  --primary-dark: #008B61;   
   --secondary: #F9FAFB;
   --accent: #E5E7EB;
 }

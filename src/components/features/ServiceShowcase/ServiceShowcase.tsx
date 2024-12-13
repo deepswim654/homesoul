@@ -155,10 +155,10 @@ const ServiceShowcase: FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12"
         >
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Key Features</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl">
             Explore our comprehensive solutions for sustainable development and green living
           </p>
         </motion.div>

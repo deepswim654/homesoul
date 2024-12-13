@@ -32,10 +32,10 @@ export const BentoGrid: FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12"
         >
           <h2 className="text-3xl font-bold text-white mb-4">Building Sustainable Communities</h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="text-gray-300 max-w-2xl">
             Empowering lives through innovative technology and sustainable development solutions
           </p>
         </motion.div>
