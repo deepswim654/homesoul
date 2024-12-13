@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
 import { ArrowRightIcon } from 'lucide-react';
 
 interface Service {
@@ -20,7 +19,7 @@ const services: Service[] = [
     title: "Academy",
     description: "Empowering individuals with skills and knowledge to thrive in the sustainable building and energy industry.",
     image: "/images/services/academy.jpg",
-    href: "/services/academy",
+    href: "/academy",
     features: [
       "Tailored Training Programs",
       "Target Audience Focus",
@@ -32,7 +31,7 @@ const services: Service[] = [
     title: "Consulting",
     description: "Expert support for sustainable construction and renovation projects, making the process seamless and efficient.",
     image: "/images/services/consulting.jpg",
-    href: "/services/consulting",
+    href: "/consulting",
     features: [
       "Project Guidance",
       "Sustainability Expertise",
@@ -41,10 +40,10 @@ const services: Service[] = [
     ]
   },
   {
-    title: "Development and Construction",
+    title: "Development",
     description: "Leverage technology to create safe, sustainable, and cost-effective building projects.",
     image: "/images/services/development.jpg",
-    href: "/services/development",
+    href: "/development-and-construction",
     features: [
       "Innovative Software",
       "Eco-Friendly Construction",
@@ -53,10 +52,10 @@ const services: Service[] = [
     ]
   },
   {
-    title: "Building Material Supplier",
+    title: "Materials",
     description: "Access a curated network of manufacturers offering sustainable and innovative building materials.",
     image: "/images/services/materials.jpg",
-    href: "/services/materials",
+    href: "/building-material-supplier",
     features: [
       "Eco-Friendly Materials",
       "Smart Home Solutions",
@@ -68,7 +67,7 @@ const services: Service[] = [
     title: "Finance",
     description: "Comprehensive financial solutions to ensure your project's success and security.",
     image: "/images/services/finance.jpg",
-    href: "/services/finance",
+    href: "/finance",
     features: [
       "Capital Raising",
       "Secure Payments",
@@ -77,10 +76,10 @@ const services: Service[] = [
     ]
   },
   {
-    title: "The Dreamers Hub",
+    title: "Dreamers Hub",
     description: "A community-driven space for collaboration, growth, and innovation in sustainable development.",
     image: "/images/services/dreamers.jpg",
-    href: "/services/dreamers",
+    href: "/the-dreamers-hub",
     features: [
       "Personal Development",
       "Collaboration Opportunities",
@@ -92,7 +91,7 @@ const services: Service[] = [
     title: "Wellbeing",
     description: "Promoting a holistic approach to sustainability by integrating health and environmental consciousness.",
     image: "/images/services/wellbeing.jpg",
-    href: "/services/wellbeing",
+    href: "/wellbeing",
     features: [
       "Lifestyle Integration",
       "Health-Enhancing Solutions",
@@ -109,55 +108,48 @@ const ServiceRow: FC<{ service: Service; index: number }> = ({ service, index })
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="flex flex-col md:flex-row items-center gap-8 py-16"
+      className="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
     >
-      <div className={`w-full md:w-1/2 ${isEven ? 'md:order-1' : 'md:order-2'}`}>
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+      <Link href={service.href} className="flex flex-col md:flex-row items-center">
+        <div className={`w-full md:w-1/3 relative h-48 md:h-40 overflow-hidden rounded-t-xl md:rounded-tr-none md:rounded-l-xl`}>
           <Image
             src={service.image}
             alt={service.title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
         </div>
-      </div>
-      
-      <div className={`w-full md:w-1/2 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
-        <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
-        <p className="text-gray-600 mb-6">{service.description}</p>
-        <ul className="space-y-3 mb-8">
-          {service.features.map((feature, idx) => (
-            <motion.li
-              key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: idx * 0.1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-3 text-gray-700"
-            >
-              <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              {feature}
-            </motion.li>
-          ))}
-        </ul>
-        <Link href={service.href}>
-          <Button variant="primary" size="lg" className="group">
-            <span>Learn More</span>
-            <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </Link>
-      </div>
+        
+        <div className={`w-full md:w-2/3 p-6 md:p-8 rounded-b-xl md:rounded-l-none md:rounded-r-xl`}>
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
+            <ArrowRightIcon className="w-5 h-5 text-primary transform translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
+          </div>
+          
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{service.description}</p>
+          
+          <div className="flex flex-wrap gap-2">
+            {service.features.map((feature, idx) => (
+              <span
+                key={idx}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+              >
+                {feature}
+              </span>
+            ))}
+          </div>
+        </div>
+      </Link>
     </motion.div>
   );
 };
 
-const ServiceShowcase = () => {
+const ServiceShowcase: FC = () => {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -165,15 +157,15 @@ const ServiceShowcase = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Key Features</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Comprehensive solutions for sustainable development and green living
+            Explore our comprehensive solutions for sustainable development and green living
           </p>
         </motion.div>
 
-        <div className="divide-y divide-gray-200">
+        <div className="space-y-4">
           {services.map((service, index) => (
-            <ServiceRow key={index} service={service} index={index} />
+            <ServiceRow key={service.title} service={service} index={index} />
           ))}
         </div>
       </div>

@@ -9,6 +9,15 @@ import { NAV_ITEMS } from '@/constants/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
+type NavItem = {
+  readonly label: string;
+  readonly href?: string;
+  readonly children?: ReadonlyArray<{
+    readonly href: string;
+    readonly label: string;
+  }>;
+};
+
 export const Navigation: FC = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,6 +52,12 @@ export const Navigation: FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleDropdown = (item: NavItem) => {
+    if (item.children) {
+      setOpenDropdown(item.label);
+    }
+  };
+
   return (
     <motion.header
       className="fixed top-0 left-0 right-0 z-50"
@@ -54,6 +69,7 @@ export const Navigation: FC = () => {
         className={cn(
           "absolute inset-0 transition-all duration-300 bg-white border-b border-gray-100 shadow",
         )}
+        style={{ opacity: headerBackgroundOpacity }}
       />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.nav 
@@ -74,17 +90,20 @@ export const Navigation: FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {NAV_ITEMS.map((item, index) => (
+            {NAV_ITEMS.map((item: NavItem, index) => (
               <div
-                key={item.href || `dropdown-${index}`}
+                key={`nav-item-${index}`}
                 className="relative group"
-                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
+                onMouseEnter={() => handleDropdown(item)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="relative px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-300"
+                    className={cn(
+                      "relative px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-300",
+                      pathname === item.href && "text-gray-900"
+                    )}
                   >
                     {item.label}
                   </Link>
@@ -147,11 +166,11 @@ export const Navigation: FC = () => {
           <button className={cn(
             "md:hidden relative z-10 p-2 rounded-lg transition-colors duration-300",
             isScrolled 
-              ? "bg-gray-100/80 text-gray-600 hover:text-gray-900 hover:bg-gray-200/80"
-              : "bg-white/10 text-white hover:bg-white/20"
+              ? "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+              : "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
           )}>
             <span className="sr-only">Open menu</span>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
