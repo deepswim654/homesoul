@@ -2,6 +2,7 @@
 
 import { FC } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FOOTER_LINKS } from '@/constants/navigation';
 import { siteConfig } from '@/config/site';
 import { FooterSection } from '@/types/features';
@@ -13,7 +14,15 @@ export const Footer: FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-2 md:col-span-1">
-            <h2 className="text-gray-900 text-lg font-bold mb-4">{siteConfig.name}</h2>
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/assets/logos/logo.svg"
+                alt="HomeSoul Logo"
+                width={180}
+                height={72}
+                className="w-44 h-16"
+              />
+            </Link>
             <p className="text-sm text-gray-500 mb-4">
               Smart living for a sustainable future.
             </p>

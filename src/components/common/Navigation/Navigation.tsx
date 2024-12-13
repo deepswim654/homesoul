@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/constants/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 
 type NavItem = {
   readonly label: string;
@@ -80,11 +81,16 @@ export const Navigation: FC = () => {
           <motion.div style={{ scale }}>
             <Link 
               href="/" 
-              className="relative flex items-center space-x-2 text-xl font-bold text-gray-900"
+              className="relative flex items-center"
             >
-              <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                HomeSoul
-              </span>
+              <Image
+                src="/assets/logos/logo.svg"
+                alt="HomeSoul Logo"
+                width={180}
+                height={72}
+                className="w-44 h-16"
+                priority
+              />
             </Link>
           </motion.div>
 
