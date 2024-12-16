@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={fonts.sans.className}>
-      <body className="min-h-screen flex flex-col bg-white">
+    <html lang="en" className={fonts.sans.className} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col bg-white" suppressHydrationWarning>
         <Navigation />
         <main className="flex-grow">
           {children}

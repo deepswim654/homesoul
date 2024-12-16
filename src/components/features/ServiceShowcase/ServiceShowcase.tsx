@@ -111,6 +111,7 @@ const ServiceRow: FC<{ service: Service; index: number }> = ({ service, index })
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
       className="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+      suppressHydrationWarning
     >
       <Link href={service.href} className="flex flex-col md:flex-row items-center">
         <div className={`w-full md:w-1/3 relative h-48 md:h-40 overflow-hidden rounded-t-xl md:rounded-tr-none md:rounded-l-xl`}>
@@ -156,6 +157,7 @@ const ServiceShowcase: FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="mb-12"
+          suppressHydrationWarning
         >
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Key Features</h2>
           <p className="text-gray-600 max-w-2xl">

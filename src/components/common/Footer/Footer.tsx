@@ -50,7 +50,7 @@ export const Footer: FC = () => {
 
         {/* Copyright */}
         <div className="border-t border-gray-100 mt-12 pt-8 text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -17,6 +17,7 @@ const BentoItem: FC<BentoItemProps> = ({ title, description, icon, className }) 
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     className={`p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-lg border border-white/10 ${className}`}
+    suppressHydrationWarning
   >
     <div className="text-primary mb-4">{icon}</div>
     <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
@@ -33,6 +34,7 @@ export const BentoGrid: FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="mb-12"
+          suppressHydrationWarning
         >
           <h2 className="text-3xl font-bold text-white mb-4">Building Sustainable Communities</h2>
           <p className="text-gray-300 max-w-2xl">
