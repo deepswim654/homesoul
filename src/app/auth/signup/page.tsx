@@ -6,56 +6,39 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { Eye, EyeOff } from 'lucide-react';
-import { signInWithGoogle } from '@/lib/auth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signupSchema, type SignupFormData } from '@/lib/validations/auth';
 
 const SignUpPage: FC = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+  });
+
+  const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
-
     try {
-      // Basic validation
-      if (!email || !password || !confirmPassword) {
-        throw new Error('Please fill in all fields');
-      }
-
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        throw new Error('Please enter a valid email address');
-      }
-
-      // Password validation
-      if (password.length < 6) {
-        throw new Error('Password must be at least 6 characters long');
-      }
-
-      if (password !== confirmPassword) {
-        throw new Error('Passwords do not match');
-      }
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-
+      console.log('Form data:', data);
+      
       // Success - you would typically:
       // 1. Send data to your backend
       // 2. Get a token
       // 3. Store it in localStorage or cookies
       // 4. Update your auth state
       localStorage.setItem('isLoggedIn', 'true');
-      router.push('/'); // Redirect to home page
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      router.push('/');
+    } catch (error) {
+      console.error('Signup error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -79,17 +62,6 @@ const SignUpPage: FC = () => {
             </Link>
           </p>
         </motion.div>
-
-        {/* Error Message */}
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 text-red-500 p-4 rounded-lg text-sm"
-          >
-            {error}
-          </motion.div>
-        )}
 
         {/* Social Sign Up */}
         <motion.div
@@ -126,7 +98,7 @@ const SignUpPage: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="mt-8 space-y-6"
         >
           <div className="space-y-4 rounded-md">
@@ -137,15 +109,17 @@ const SignUpPage: FC = () => {
               <div className="mt-1">
                 <input
                   id="email"
-                  name="email"
                   type="email"
                   autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200"
+                  className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   placeholder="Enter your email"
+                  {...register('email')}
                 />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                )}
               </div>
             </div>
 
@@ -156,14 +130,13 @@ const SignUpPage: FC = () => {
               <div className="mt-1 relative">
                 <input
                   id="password"
-                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200"
+                  className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   placeholder="Create a password"
+                  {...register('password')}
                 />
                 <button
                   type="button"
@@ -176,6 +149,9 @@ const SignUpPage: FC = () => {
                     <Eye className="h-5 w-5" />
                   )}
                 </button>
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                )}
               </div>
             </div>
 
@@ -186,15 +162,17 @@ const SignUpPage: FC = () => {
               <div className="mt-1">
                 <input
                   id="confirmPassword"
-                  name="confirmPassword"
                   type="password"
                   autoComplete="new-password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200"
+                  className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   placeholder="Confirm your password"
+                  {...register('confirmPassword')}
                 />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-500">{errors.confirmPassword.message}</p>
+                )}
               </div>
             </div>
           </div>
