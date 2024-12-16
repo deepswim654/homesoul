@@ -62,8 +62,8 @@ const SignUpPage: FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 py-12">
-      <div className="max-w-md w-full space-y-8 my-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 py-16">
+      <div className="max-w-md w-full space-y-8 my-12 px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
