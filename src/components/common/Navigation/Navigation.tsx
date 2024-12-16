@@ -159,20 +159,24 @@ export const Navigation: FC = () => {
             className="hidden md:flex items-center space-x-4"
             style={{ scale }}
           >
-            <Button 
-              variant="secondary"
-              size="sm"
-              className="text-gray-700 hover:text-gray-900"
-            >
-              Log in
-            </Button>
-            <Button 
-              variant="primary" 
-              size="sm"
-              className="shadow-lg shadow-primary/20 hover:shadow-primary/30"
-            >
-              Get Started
-            </Button>
+            <Link href="/auth/login">
+              <Button 
+                variant="secondary"
+                size="sm"
+                className="text-gray-700 hover:text-gray-900"
+              >
+                Log in
+              </Button>
+            </Link>
+            <Link href="/auth/signup">
+              <Button 
+                variant="primary" 
+                size="sm"
+                className="shadow-lg shadow-primary/20 hover:shadow-primary/30"
+              >
+                Get Started
+              </Button>
+            </Link>
           </motion.div>
 
           {/* Mobile menu button */}
@@ -253,20 +257,24 @@ export const Navigation: FC = () => {
                   </div>
                 ))}
                 <div className="px-4 pt-4 pb-2 space-y-2">
-                  <Button 
-                    variant="secondary"
-                    size="sm"
-                    className="w-full text-gray-700 hover:text-gray-900"
-                  >
-                    Log in
-                  </Button>
-                  <Button 
-                    variant="primary" 
-                    size="sm"
-                    className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30"
-                  >
-                    Get Started
-                  </Button>
+                  <Link href="/auth/login" className="block w-full">
+                    <Button 
+                      variant="secondary"
+                      size="sm"
+                      className="w-full text-gray-700 hover:text-gray-900"
+                    >
+                      Log in
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup" className="block w-full">
+                    <Button 
+                      variant="primary" 
+                      size="sm"
+                      className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
