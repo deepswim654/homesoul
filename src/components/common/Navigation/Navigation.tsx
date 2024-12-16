@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/constants/navigation';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ChevronDown, X } from 'lucide-react';
-import Image from 'next/image';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 type NavItem = {
   readonly label: string;
@@ -90,13 +90,14 @@ export const Navigation: FC = () => {
               href="/" 
               className="relative flex items-center"
             >
-              <Image
+              <OptimizedImage
                 src="/assets/logos/logo.svg"
                 alt="HomeSoul Logo"
                 width={180}
                 height={72}
                 className="w-44 h-16"
                 priority
+                usePlaceholder={false}
               />
             </Link>
           </motion.div>
