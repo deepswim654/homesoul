@@ -18,7 +18,7 @@ const services: Service[] = [
   {
     title: "Academy",
     description: "Empowering individuals with skills and knowledge to thrive in the sustainable building and energy industry.",
-    image: "/images/services/academy.jpg",
+    image: "/assets/images/services/academy.jpg",
     href: "/academy",
     features: [
       "Tailored Training Programs",
@@ -30,7 +30,7 @@ const services: Service[] = [
   {
     title: "Consulting",
     description: "Expert support for sustainable construction and renovation projects, making the process seamless and efficient.",
-    image: "/images/services/consulting.jpg",
+    image: "/assets/images/services/consulting.jpg",
     href: "/consulting",
     features: [
       "Project Guidance",
@@ -42,7 +42,7 @@ const services: Service[] = [
   {
     title: "Development",
     description: "Leverage technology to create safe, sustainable, and cost-effective building projects.",
-    image: "/images/services/development.jpg",
+    image: "/assets/images/services/development.jpg",
     href: "/development-and-construction",
     features: [
       "Innovative Software",
@@ -54,7 +54,7 @@ const services: Service[] = [
   {
     title: "Materials",
     description: "Access a curated network of manufacturers offering sustainable and innovative building materials.",
-    image: "/images/services/materials.jpg",
+    image: "/assets/images/services/materials.jpg",
     href: "/building-material-supplier",
     features: [
       "Eco-Friendly Materials",
@@ -66,7 +66,7 @@ const services: Service[] = [
   {
     title: "Finance",
     description: "Comprehensive financial solutions to ensure your project's success and security.",
-    image: "/images/services/finance.jpg",
+    image: "/assets/images/services/finance.jpg",
     href: "/finance",
     features: [
       "Capital Raising",
@@ -78,7 +78,7 @@ const services: Service[] = [
   {
     title: "Dreamers Hub",
     description: "A community-driven space for collaboration, growth, and innovation in sustainable development.",
-    image: "/images/services/dreamers.jpg",
+    image: "/assets/images/services/dreamers.jpg",
     href: "/the-dreamers-hub",
     features: [
       "Personal Development",
@@ -90,7 +90,7 @@ const services: Service[] = [
   {
     title: "Wellbeing",
     description: "Promoting a holistic approach to sustainability by integrating health and environmental consciousness.",
-    image: "/images/services/wellbeing.jpg",
+    image: "/assets/images/services/wellbeing.jpg",
     href: "/wellbeing",
     features: [
       "Lifestyle Integration",
@@ -117,9 +117,12 @@ const ServiceRow: FC<{ service: Service; index: number }> = ({ service, index })
         <div className={`w-full md:w-1/3 relative h-48 md:h-40 overflow-hidden rounded-t-xl md:rounded-tr-none md:rounded-l-xl`}>
           <Image
             src={service.image}
-            alt={service.title}
+            alt={`${service.title} service illustration`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            quality={85}
+            priority={index < 2}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
         </div>

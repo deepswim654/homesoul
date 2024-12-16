@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Navigation, Footer } from '@/components/common';
+import { ErrorBoundaryProvider } from '@/components/providers/ErrorBoundaryProvider';
 import { siteConfig } from '@/config/site';
 import '@/styles/globals.css';
 import { fonts } from '@/config/fonts'
@@ -54,11 +55,15 @@ export default function RootLayout({
         <link rel="manifest" href="/favicon/site.webmanifest" />
       </head>
       <body className="min-h-screen flex flex-col bg-white" suppressHydrationWarning>
-        <Navigation />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <ErrorBoundaryProvider>
+          <Navigation />
+          <main className="flex-grow">
+            <ErrorBoundaryProvider>
+              {children}
+            </ErrorBoundaryProvider>
+          </main>
+          <Footer />
+        </ErrorBoundaryProvider>
       </body>
     </html>
   );
