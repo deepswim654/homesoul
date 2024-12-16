@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/constants/navigation';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { ChevronDown, X } from 'lucide-react';
 import Image from 'next/image';
 
 type NavItem = {
@@ -23,6 +23,7 @@ export const Navigation: FC = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   
   // Transform values based on scroll
@@ -58,6 +59,11 @@ export const Navigation: FC = () => {
       setOpenDropdown(item.label);
     }
   };
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
     <motion.header
@@ -170,18 +176,102 @@ export const Navigation: FC = () => {
           </motion.div>
 
           {/* Mobile menu button */}
-          <button className={cn(
-            "md:hidden relative z-10 p-2 rounded-lg transition-colors duration-300",
-            isScrolled 
-              ? "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-              : "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-          )}>
-            <span className="sr-only">Open menu</span>
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={cn(
+              "md:hidden relative z-10 p-2 rounded-lg transition-colors duration-300",
+              isScrolled 
+                ? "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                : "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+            )}
+          >
+            <span className="sr-only">
+              {isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            </span>
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </motion.nav>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-white"
+            >
+              <div className="py-4 space-y-1">
+                {NAV_ITEMS.map((item, index) => (
+                  <div key={`mobile-${index}`}>
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "block px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50",
+                          pathname === item.href && "text-gray-900 bg-gray-50"
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                          className="flex items-center justify-between w-full px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        >
+                          {item.label}
+                          <ChevronDown 
+                            className={cn(
+                              "ml-1 h-4 w-4 transition-transform duration-200",
+                              openDropdown === item.label && "transform rotate-180"
+                            )}
+                          />
+                        </button>
+                        {item.children && openDropdown === item.label && (
+                          <div className="pl-4 space-y-1">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                className="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+                <div className="px-4 pt-4 pb-2 space-y-2">
+                  <Button 
+                    variant="secondary"
+                    size="sm"
+                    className="w-full text-gray-700 hover:text-gray-900"
+                  >
+                    Log in
+                  </Button>
+                  <Button 
+                    variant="primary" 
+                    size="sm"
+                    className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.header>
   );
