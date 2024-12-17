@@ -100,7 +100,7 @@ export const ServiceExplanation: FC = () => {
             <div className="relative h-[300px] mb-8">
               <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/assets/images/service-explanation/sustainable-city.jpg"
+                  src="/assets/images/service-explanation/service-explanation.jpg"
                   alt="Sustainable city development"
                   fill
                   className="object-cover"
