@@ -1,10 +1,38 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { ArrowRightIcon, PlayCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+
+const stats = [
+  { value: '7+', label: 'Green Services' },
+  { value: '$30K+', label: 'Partner Benefits' },
+  { value: '100%', label: 'Sustainable Focus' },
+];
+
+const HeroStats = memo(() => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.6 }}
+    className="grid grid-cols-3 divide-x divide-gray-200 mt-12"
+  >
+    {stats.map((stat, index) => (
+      <div key={index} className="px-6 first:pl-0">
+        <div className="font-heading text-xl font-bold text-gray-900">
+          {stat.value}
+        </div>
+        <div className="text-xs text-gray-500 tracking-wide mt-1">
+          {stat.label}
+        </div>
+      </div>
+    ))}
+  </motion.div>
+));
+
+HeroStats.displayName = 'HeroStats';
 
 export const HeroSection: FC = () => {
   return (
@@ -19,6 +47,7 @@ export const HeroSection: FC = () => {
             className="object-contain object-right"
             priority
             sizes="40vw"
+            quality={75}
           />
         </div>
       </div>
@@ -82,23 +111,7 @@ export const HeroSection: FC = () => {
             </motion.div>
 
             {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="grid grid-cols-3 divide-x divide-gray-200 mt-12"
-            >
-              {stats.map((stat, index) => (
-                <div key={index} className="px-6 first:pl-0">
-                  <div className="font-heading text-xl font-bold text-gray-900">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs text-gray-500 tracking-wide mt-1">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
+            <HeroStats />
           </div>
         </div>
       </div>
@@ -106,8 +119,4 @@ export const HeroSection: FC = () => {
   );
 };
 
-const stats = [
-  { value: '7+', label: 'Green Services' },
-  { value: '$30K+', label: 'Partner Benefits' },
-  { value: '100%', label: 'Sustainable Focus' },
-];
+export default memo(HeroSection);

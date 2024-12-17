@@ -11,9 +11,9 @@ import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
 import { useRouter } from 'next/navigation';
 
 const LoginPage: FC = () => {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -25,30 +25,18 @@ const LoginPage: FC = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Form data:', data);
-      
-      // Success - you would typically:
-      // 1. Send data to your backend
-      // 2. Get a token
-      // 3. Store it in localStorage or cookies
-      // 4. Update your auth state
-      localStorage.setItem('isLoggedIn', 'true');
-      router.push('/');
-    } catch (error) {
-      console.error('Login error:', error);
-    } finally {
+    // Simulate loading state
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      router.push('/');
+    }, 1000);
   };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 py-16">
       <div className="max-w-md w-full space-y-8 my-12 px-4 sm:px-6 lg:px-8">
         {/* Title */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -72,7 +60,6 @@ const LoginPage: FC = () => {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200"
-            onClick={() => console.log('Google login - to be implemented')}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="h-5 w-5">
               <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
@@ -84,6 +71,7 @@ const LoginPage: FC = () => {
           </button>
         </motion.div>
 
+        {/* Divider */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -94,7 +82,7 @@ const LoginPage: FC = () => {
         </div>
 
         {/* Login Form */}
-        <motion.form 
+        <motion.form
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}

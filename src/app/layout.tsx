@@ -55,15 +55,13 @@ export default function RootLayout({
         <link rel="manifest" href="/favicon/site.webmanifest" />
       </head>
       <body className="min-h-screen flex flex-col bg-white" suppressHydrationWarning>
-        <ErrorBoundaryProvider>
-          <Navigation />
-          <main className="flex-grow">
-            <ErrorBoundaryProvider>
-              {children}
-            </ErrorBoundaryProvider>
-          </main>
-          <Footer />
-        </ErrorBoundaryProvider>
+        <Navigation />
+        <main className="flex-grow">
+          <ErrorBoundaryProvider>
+            {children}
+          </ErrorBoundaryProvider>
+        </main>
+        <Footer />
       </body>
     </html>
   );
