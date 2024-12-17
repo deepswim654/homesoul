@@ -1,4 +1,4 @@
-import { HeroSection, BentoGrid, ProcessSteps, ServiceShowcase } from '@/components/features';
+import { HeroSection, BentoGrid, ProcessSteps, ServiceExplanation, ServiceShowcase } from '@/components/features';
 
 export default function Home() {
   return (
@@ -6,6 +6,7 @@ export default function Home() {
       <HeroSection />
       <BentoGrid />
       <ProcessSteps />
+      <ServiceExplanation />
       <ServiceShowcase />
     </div>
   );
