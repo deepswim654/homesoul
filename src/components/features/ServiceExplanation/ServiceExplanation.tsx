@@ -94,35 +94,44 @@ export const ServiceExplanation: FC = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative lg:h-[600px] h-[400px]"
+            className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl overflow-hidden">
-              <Image
-                src="/assets/images/service-explanation.jpg"
-                alt="Sustainable building solutions"
-                fill
-                className="object-cover mix-blend-overlay"
-                quality={90}
-              />
+            {/* Top Image */}
+            <div className="relative h-[300px] mb-8">
+              <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/assets/images/service-explanation/sustainable-city.jpg"
+                  alt="Sustainable city development"
+                  fill
+                  className="object-cover"
+                  quality={90}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent mix-blend-overlay" />
+              </div>
             </div>
             
-            {/* Stats Overlay */}
-            <div className="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-              <div className="grid grid-cols-3 gap-4">
+            {/* Bottom Stats Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl p-8 shadow-xl relative z-10"
+            >
+              <div className="grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">30K+</div>
+                  <div className="text-3xl font-bold text-primary mb-1">30K+</div>
                   <div className="text-sm text-gray-600">Value in Benefits</div>
                 </div>
-                <div className="text-center border-x border-gray-200">
-                  <div className="text-2xl font-bold text-primary">100%</div>
+                <div className="text-center border-x border-gray-100">
+                  <div className="text-3xl font-bold text-primary mb-1">100%</div>
                   <div className="text-sm text-gray-600">Eco-Friendly</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">24/7</div>
+                  <div className="text-3xl font-bold text-primary mb-1">24/7</div>
                   <div className="text-sm text-gray-600">Expert Support</div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

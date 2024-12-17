@@ -5,8 +5,8 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroSection />
       <BentoGrid />
-      <ProcessSteps />
       <ServiceExplanation />
+      <ProcessSteps />
       <ServiceShowcase />
     </div>
   );
