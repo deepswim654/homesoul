@@ -57,7 +57,7 @@ export const ProcessSteps: FC = () => {
             >
               <div className="flex flex-col items-center">
                 {/* Step Number */}
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-6xl font-bold text-gray-100 select-none">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-5xl font-bold text-gray-100/30 select-none">
                   {index + 1}
                 </div>
                 
