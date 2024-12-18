@@ -5,7 +5,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { config } from 'dotenv';
 import { join } from 'path';
+import passport from 'passport';
 import { AppDataSource } from './config/database';
+import './config/passport'; // Import passport config
 import authRoutes from './routes/auth.routes';
 
 // Load environment variables
@@ -32,6 +34,9 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Initialize Passport
+app.use(passport.initialize());
 
 // Routes
 app.use('/api/auth', authRoutes);

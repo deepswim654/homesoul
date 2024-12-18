@@ -244,4 +244,27 @@ export class AuthController {
       res.status(401).json({ message: 'Invalid refresh token' });
     }
   }
+
+  async googleCallback(req: Request, res: Response): Promise<void> {
+    try {
+      const user = req.user as User;
+      if (!user) {
+        res.status(401).json({ message: 'Authentication failed' });
+        return;
+      }
+
+      // Generate tokens
+      const { accessToken, refreshToken } = generateTokens(user.id);
+
+      // Redirect to frontend with tokens
+      const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL as string);
+      redirectUrl.searchParams.set('accessToken', accessToken);
+      redirectUrl.searchParams.set('refreshToken', refreshToken);
+      
+      res.redirect(redirectUrl.toString());
+    } catch (error) {
+      console.error('Google callback error:', error);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/login?error=google_auth_failed`);
+    }
+  }
 } 
