@@ -31,8 +31,20 @@ export class User {
   })
   role: UserRole;
 
+  @Column({ default: false })
+  emailVerified: boolean;
+
   @Column({ nullable: true })
-  emailVerified?: Date;
+  verificationToken?: string;
+
+  @Column({ nullable: true })
+  verificationTokenExpiry?: Date;
+
+  @Column({ nullable: true })
+  passwordResetToken?: string;
+
+  @Column({ nullable: true })
+  passwordResetTokenExpiry?: Date;
 
   @CreateDateColumn()
   createdAt: Date;

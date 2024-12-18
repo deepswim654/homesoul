@@ -3,6 +3,8 @@ import { User } from '../entities/User';
 import { AppDataSource } from '../config/database';
 import * as jwt from 'jsonwebtoken';
 import { RequestWithUser } from '../types/auth.types';
+import { emailService } from '../services/email.service';
+import { tokenService } from '../services/token.service';
 
 const userRepository = AppDataSource.getRepository(User);
 
@@ -42,22 +44,90 @@ export class AuthController {
 
       await userRepository.save(user);
 
+      // Generate verification token and send email
+      await tokenService.setVerificationToken(user);
+      await emailService.sendVerificationEmail(user.email, user.verificationToken!);
+
       // Generate tokens
       const { accessToken, refreshToken } = generateTokens(user.id);
 
       res.status(201).json({
-        message: 'User registered successfully',
+        message: 'User registered successfully. Please check your email to verify your account.',
         accessToken,
         refreshToken,
         user: {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
+          emailVerified: user.emailVerified
         }
       });
     } catch (error) {
       console.error('Registration error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  async verifyEmail(req: Request, res: Response): Promise<void> {
+    try {
+      const { token } = req.params;
+
+      const user = await tokenService.verifyEmailToken(token);
+      if (!user) {
+        res.status(400).json({ message: 'Invalid or expired verification token' });
+        return;
+      }
+
+      await tokenService.clearVerificationToken(user);
+      await emailService.sendWelcomeEmail(user.email, user.name || 'User');
+
+      res.json({ message: 'Email verified successfully' });
+    } catch (error) {
+      console.error('Email verification error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  async forgotPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      const user = await userRepository.findOne({ where: { email } });
+      if (!user) {
+        // Don't reveal whether a user exists
+        res.json({ message: 'If an account exists, you will receive a password reset email' });
+        return;
+      }
+
+      await tokenService.setPasswordResetToken(user);
+      await emailService.sendPasswordResetEmail(user.email, user.passwordResetToken!);
+
+      res.json({ message: 'If an account exists, you will receive a password reset email' });
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+
+      const user = await tokenService.verifyPasswordResetToken(token);
+      if (!user) {
+        res.status(400).json({ message: 'Invalid or expired reset token' });
+        return;
+      }
+
+      user.password = password;
+      await tokenService.clearPasswordResetToken(user);
+      await userRepository.save(user);
+
+      res.json({ message: 'Password reset successfully' });
+    } catch (error) {
+      console.error('Password reset error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -69,7 +139,7 @@ export class AuthController {
       // Find user with password (select: false by default)
       const user = await userRepository.findOne({
         where: { email },
-        select: ['id', 'email', 'password', 'name', 'role']
+        select: ['id', 'email', 'password', 'name', 'role', 'emailVerified']
       });
 
       if (!user) {
@@ -84,6 +154,18 @@ export class AuthController {
         return;
       }
 
+      // Check if email is verified
+      if (!user.emailVerified) {
+        // Resend verification email
+        await tokenService.setVerificationToken(user);
+        await emailService.sendVerificationEmail(user.email, user.verificationToken!);
+
+        res.status(403).json({
+          message: 'Please verify your email address. A new verification email has been sent.'
+        });
+        return;
+      }
+
       // Generate tokens
       const { accessToken, refreshToken } = generateTokens(user.id);
 
@@ -95,7 +177,8 @@ export class AuthController {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
+          emailVerified: user.emailVerified
         }
       });
     } catch (error) {
@@ -124,7 +207,8 @@ export class AuthController {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role
+          role: user.role,
+          emailVerified: user.emailVerified
         }
       });
     } catch (error) {
