@@ -6,6 +6,22 @@ import { RequestWithUser } from '../types/auth.types';
 
 const userRepository = AppDataSource.getRepository(User);
 
+const generateTokens = (userId: string) => {
+  const accessToken = jwt.sign(
+    { userId },
+    process.env.JWT_SECRET as string,
+    { expiresIn: process.env.JWT_EXPIRATION }
+  );
+
+  const refreshToken = jwt.sign(
+    { userId },
+    process.env.JWT_REFRESH_SECRET as string,
+    { expiresIn: '7d' }
+  );
+
+  return { accessToken, refreshToken };
+};
+
 export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
@@ -26,16 +42,13 @@ export class AuthController {
 
       await userRepository.save(user);
 
-      // Generate JWT token
-      const token = jwt.sign(
-        { userId: user.id },
-        process.env.JWT_SECRET as string,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      );
+      // Generate tokens
+      const { accessToken, refreshToken } = generateTokens(user.id);
 
       res.status(201).json({
         message: 'User registered successfully',
-        token,
+        accessToken,
+        refreshToken,
         user: {
           id: user.id,
           email: user.email,
@@ -71,16 +84,13 @@ export class AuthController {
         return;
       }
 
-      // Generate JWT token
-      const token = jwt.sign(
-        { userId: user.id },
-        process.env.JWT_SECRET as string,
-        { expiresIn: process.env.JWT_EXPIRATION }
-      );
+      // Generate tokens
+      const { accessToken, refreshToken } = generateTokens(user.id);
 
       res.json({
         message: 'Login successful',
-        token,
+        accessToken,
+        refreshToken,
         user: {
           id: user.id,
           email: user.email,
@@ -120,6 +130,34 @@ export class AuthController {
     } catch (error) {
       console.error('Get user error:', error);
       res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  async refresh(req: Request, res: Response): Promise<void> {
+    try {
+      const { refreshToken } = req.body;
+
+      if (!refreshToken) {
+        res.status(400).json({ message: 'Refresh token is required' });
+        return;
+      }
+
+      // Verify refresh token
+      const decoded = jwt.verify(
+        refreshToken,
+        process.env.JWT_REFRESH_SECRET as string
+      ) as { userId: string };
+
+      // Generate new tokens
+      const tokens = generateTokens(decoded.userId);
+
+      res.json({
+        message: 'Token refreshed successfully',
+        ...tokens
+      });
+    } catch (error) {
+      console.error('Refresh token error:', error);
+      res.status(401).json({ message: 'Invalid refresh token' });
     }
   }
 } 
