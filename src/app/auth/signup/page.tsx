@@ -10,12 +10,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, type SignupFormData } from '@/lib/validations/auth';
 import { authService } from '@/services/auth.service';
+import { useAuth } from '@/lib/contexts/AuthContext';
 
 const SignUpPage = () => {
-  const router = useRouter();
+  const { register: registerUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -30,13 +32,20 @@ const SignUpPage = () => {
     setError(null);
 
     try {
-      const response = await authService.register(data);
-      authService.setToken(response.token);
-      router.push('/');
+      await registerUser(data.name, data.email, data.password);
+      router.push('/auth/verify-email');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      await authService.loginWithGoogle();
+    } catch (error) {
+      setError('Google signup failed. Please try again.');
     }
   };
 
@@ -68,7 +77,7 @@ const SignUpPage = () => {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200"
-            onClick={() => console.log('Google signup - to be implemented')}
+            onClick={handleGoogleSignup}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="h-5 w-5">
               <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
