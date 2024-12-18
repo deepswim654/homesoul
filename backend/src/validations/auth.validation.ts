@@ -28,9 +28,14 @@ export const forgotPasswordSchema = z.object({
 export const resetPasswordSchema = z.object({
   password: passwordSchema,
   confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
+}).superRefine((data, ctx) => {
+  if (data.password !== data.confirmPassword) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    });
+  }
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
