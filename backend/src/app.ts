@@ -9,6 +9,7 @@ import passport from 'passport';
 import { AppDataSource } from './config/database';
 import './config/passport'; // Import passport config
 import authRoutes from './routes/auth.routes';
+import profileRoutes from './routes/profile.routes';
 
 // Load environment variables
 config({ path: join(__dirname, '../.env') });
@@ -40,6 +41,7 @@ app.use(passport.initialize());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Health check route
 app.get('/health', (_req: Request, res: Response) => {

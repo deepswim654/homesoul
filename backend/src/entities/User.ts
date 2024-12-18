@@ -24,6 +24,9 @@ export class User {
   @Column({ nullable: true })
   image?: string;
 
+  @Column({ nullable: true })
+  bio?: string;
+
   @Column({
     type: 'enum',
     enum: UserRole,

@@ -130,4 +130,43 @@ export const authService = {
       throw new Error(error.message || 'Failed to reset password');
     }
   },
+
+  async updateProfile(data: { name: string; email: string; bio?: string }): Promise<AuthResponse> {
+    const token = this.getToken();
+    if (!token) throw new Error('No access token');
+
+    const response = await fetch(`${API_URL}/profile`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to update profile');
+    }
+
+    return response.json();
+  },
+
+  async getProfile(): Promise<{ user: AuthResponse['user'] }> {
+    const token = this.getToken();
+    if (!token) throw new Error('No access token');
+
+    const response = await fetch(`${API_URL}/profile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to get profile');
+    }
+
+    return response.json();
+  },
 }; 
