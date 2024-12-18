@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -9,11 +9,13 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, type SignupFormData } from '@/lib/validations/auth';
+import { authService } from '@/services/auth.service';
 
-const SignUpPage: FC = () => {
+const SignUpPage = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -25,20 +27,14 @@ const SignUpPage: FC = () => {
 
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
+    setError(null);
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Form data:', data);
-      
-      // Success - you would typically:
-      // 1. Send data to your backend
-      // 2. Get a token
-      // 3. Store it in localStorage or cookies
-      // 4. Update your auth state
-      localStorage.setItem('isLoggedIn', 'true');
+      const response = await authService.register(data);
+      authService.setToken(response.token);
       router.push('/');
     } catch (error) {
-      console.error('Signup error:', error);
+      setError(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsLoading(false);
     }
@@ -93,6 +89,17 @@ const SignUpPage: FC = () => {
           </div>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-50 text-red-500 p-3 rounded-lg text-sm"
+          >
+            {error}
+          </motion.div>
+        )}
+
         {/* Sign Up Form */}
         <motion.form 
           initial={{ opacity: 0, y: 20 }}
@@ -102,6 +109,27 @@ const SignUpPage: FC = () => {
           className="mt-8 space-y-6"
         >
           <div className="space-y-4 rounded-md">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <div className="mt-1">
+                <input
+                  id="name"
+                  type="text"
+                  autoComplete="name"
+                  className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
+                    errors.name ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter your full name"
+                  {...register('name')}
+                />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address

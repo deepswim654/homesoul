@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import { config } from 'dotenv';
 import { join } from 'path';
 import { AppDataSource } from './config/database';
+import authRoutes from './routes/auth.routes';
 
 // Load environment variables
 config({ path: join(__dirname, '../.env') });
@@ -31,6 +32,9 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 // Health check route
 app.get('/health', (_req: Request, res: Response) => {
