@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authService.register({ name, email, password });
       setUser(response.user);
-      router.push('/');
+      router.push('/profile');
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

@@ -34,8 +34,9 @@ const SignUpPage = () => {
 
     try {
       await registerUser(data.name, data.email, data.password);
-      router.push('/auth/verify-email');
+      router.push('/profile');
     } catch (error) {
+      console.error('Registration error:', error);
       setError(error instanceof Error ? error.message : 'Registration failed');
     } finally {
       setIsLoading(false);
@@ -45,7 +46,9 @@ const SignUpPage = () => {
   const handleGoogleSignup = async () => {
     try {
       await authService.loginWithGoogle();
+      router.push('/profile');
     } catch (error) {
+      console.error('Google signup error:', error);
       setError('Google signup failed. Please try again.');
     }
   };
