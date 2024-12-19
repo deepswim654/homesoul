@@ -6,6 +6,9 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { PageLayout } from '@/components/ui/PageLayout';
 import { useRouter } from 'next/navigation';
 import { User, Settings, Bell, Shield, Key, Mail, Lock } from 'lucide-react';
+import { ProfileTab } from './components/ProfileTab';
+import { EmailTab } from './components/EmailTab';
+import { PasswordTab } from './components/PasswordTab';
 
 const ProfilePage = () => {
   const { user, isLoading } = useAuth();

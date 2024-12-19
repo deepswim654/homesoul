@@ -13,6 +13,7 @@ export interface AuthResponse {
     name: string;
     role: string;
     emailVerified: boolean;
+    createdAt: string;
   };
 }
 
