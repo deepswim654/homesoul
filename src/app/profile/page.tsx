@@ -1,20 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { PageLayout } from '@/components/ui/PageLayout';
+import { useRouter } from 'next/navigation';
+import { User, Settings, Bell, Shield, Key } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema, type ProfileFormData } from '@/lib/validations/profile';
-import { User, Settings, Bell, Shield, Key } from 'lucide-react';
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('profile');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <PageLayout maxWidth="4xl">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   const {
     register,
@@ -29,7 +50,6 @@ const ProfilePage = () => {
   });
 
   const onSubmit = async (data: ProfileFormData) => {
-    setIsLoading(true);
     setError(null);
 
     try {
@@ -37,8 +57,6 @@ const ProfilePage = () => {
       console.log('Profile update:', data);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to update profile');
-    } finally {
-      setIsLoading(false);
     }
   };
 

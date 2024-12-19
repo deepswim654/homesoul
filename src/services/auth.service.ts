@@ -97,24 +97,18 @@ export const authService = {
   },
 
   setTokens(accessToken: string, refreshToken: string): void {
-    // Set in both localStorage and cookies
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    
     // Set cookies with path and expiry
-    document.cookie = `accessToken=${accessToken}; path=/; max-age=900`; // 15 minutes
-    document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800`; // 7 days
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=900; SameSite=Lax`; // 15 minutes
+    document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; SameSite=Lax`; // 7 days
   },
 
   getToken(): string | null {
-    return localStorage.getItem('accessToken');
+    const cookies = document.cookie.split(';');
+    const accessTokenCookie = cookies.find(cookie => cookie.trim().startsWith('accessToken='));
+    return accessTokenCookie ? accessTokenCookie.split('=')[1] : null;
   },
 
   removeTokens(): void {
-    // Remove from both localStorage and cookies
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    
     // Remove cookies
     document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
