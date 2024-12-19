@@ -105,76 +105,73 @@ const ProfilePage = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-6">
+              {/* User ID - Read Only */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Full Name
+                <label className="block text-sm font-medium text-gray-500">
+                  User ID
                 </label>
-                <div className="mt-1">
-                  <input
-                    id="name"
-                    type="text"
-                    className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
-                      errors.name ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    {...register('name')}
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
-                  )}
+                <div className="mt-1 flex items-center">
+                  <code className="flex-1 p-3 bg-gray-50 rounded-lg border border-gray-200 font-mono text-sm text-gray-900">
+                    {user?.id || 'Loading...'}
+                  </code>
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(user?.id || '')}
+                    className="ml-2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Copy ID"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </button>
                 </div>
+                <p className="mt-1 text-xs text-gray-500">This is your unique identifier in our system</p>
               </div>
 
+              {/* Name - Read Only for now */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-500">
+                  Name
+                </label>
+                <div className="mt-1">
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-gray-900">{user?.name || 'Not set'}</p>
+                  </div>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">Your display name in the platform</p>
+              </div>
+
+              {/* Email - Read Only */}
+              <div>
+                <label className="block text-sm font-medium text-gray-500">
                   Email Address
                 </label>
                 <div className="mt-1">
-                  <input
-                    id="email"
-                    type="email"
-                    className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
-                      errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    {...register('email')}
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-                  )}
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-gray-900">{user?.email || 'Not set'}</p>
+                  </div>
                 </div>
+                <p className="mt-1 text-xs text-gray-500">Your verified email address</p>
               </div>
 
-              <div>
-                <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
-                  Bio
-                </label>
-                <div className="mt-1">
-                  <textarea
-                    id="bio"
-                    rows={4}
-                    className={`appearance-none block w-full px-3 py-2 border rounded-lg shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-primary focus:border-primary transition-colors duration-200 ${
-                      errors.bio ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="Tell us about yourself"
-                    {...register('bio')}
-                  />
-                  {errors.bio && (
-                    <p className="mt-1 text-sm text-red-500">{errors.bio.message}</p>
-                  )}
+              {/* Account Status */}
+              <div className="pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">Account Status</h3>
+                    <p className="text-sm text-gray-500">Your account verification status</p>
+                  </div>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user?.emailVerified
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {user?.emailVerified ? 'Verified' : 'Pending Verification'}
+                  </span>
                 </div>
               </div>
-
-              <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="w-full sm:w-auto"
-                  disabled={isLoading}
-                >
-                  {isLoading ? 'Saving...' : 'Save Changes'}
-                </Button>
-              </div>
-            </form>
+            </div>
           </div>
         )}
 
