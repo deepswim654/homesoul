@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-white" suppressHydrationWarning>
         <ClientProviders>
           <Navigation />
-          <main className="flex-grow">
+          <main className="flex-grow mt-20">
             <ErrorBoundaryProvider>
               {children}
             </ErrorBoundaryProvider>

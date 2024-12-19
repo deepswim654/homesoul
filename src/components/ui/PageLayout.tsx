@@ -33,7 +33,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
       'min-h-[calc(100vh-5rem)]',
       'bg-gray-50',
       !noPadding && 'py-6',
-      'mt-20'
+      'mt-16'
     )}>
       <div className={cn(
         maxWidthClasses[maxWidth],

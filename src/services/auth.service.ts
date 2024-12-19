@@ -1,4 +1,5 @@
 import { LoginFormData } from '@/lib/validations/auth';
+import { Cookies } from 'js-cookie';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
@@ -30,7 +31,9 @@ export const authService = {
       throw new Error(error.message || 'Registration failed');
     }
 
-    return response.json();
+    const result = await response.json();
+    this.setTokens(result.accessToken, result.refreshToken);
+    return result;
   },
 
   async login(data: LoginFormData): Promise<AuthResponse> {
@@ -47,7 +50,9 @@ export const authService = {
       throw new Error(error.message || 'Login failed');
     }
 
-    return response.json();
+    const result = await response.json();
+    this.setTokens(result.accessToken, result.refreshToken);
+    return result;
   },
 
   async loginWithGoogle(): Promise<void> {
@@ -68,11 +73,13 @@ export const authService = {
       throw new Error(error.message || 'Token refresh failed');
     }
 
-    return response.json();
+    const result = await response.json();
+    this.setTokens(result.accessToken, result.refreshToken);
+    return result;
   },
 
   async me(): Promise<{ user: AuthResponse['user'] }> {
-    const token = localStorage.getItem('accessToken');
+    const token = this.getToken();
     if (!token) throw new Error('No access token');
 
     const response = await fetch(`${API_URL}/auth/me`, {
@@ -89,16 +96,28 @@ export const authService = {
     return response.json();
   },
 
-  setToken(token: string): void {
-    localStorage.setItem('accessToken', token);
+  setTokens(accessToken: string, refreshToken: string): void {
+    // Set in both localStorage and cookies
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    
+    // Set cookies with path and expiry
+    document.cookie = `accessToken=${accessToken}; path=/; max-age=900`; // 15 minutes
+    document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800`; // 7 days
   },
 
   getToken(): string | null {
     return localStorage.getItem('accessToken');
   },
 
-  removeToken(): void {
+  removeTokens(): void {
+    // Remove from both localStorage and cookies
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    
+    // Remove cookies
+    document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
   },
 
   async forgotPassword(email: string): Promise<void> {

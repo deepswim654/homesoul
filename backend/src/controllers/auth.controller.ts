@@ -41,18 +41,15 @@ export class AuthController {
       user.email = email;
       user.password = password; // Will be hashed by @BeforeInsert
       user.name = name;
+      user.emailVerified = true; // Temporarily set to true
 
       await userRepository.save(user);
-
-      // Generate verification token and send email
-      await tokenService.setVerificationToken(user);
-      await emailService.sendVerificationEmail(user.email, user.verificationToken!);
 
       // Generate tokens
       const { accessToken, refreshToken } = generateTokens(user.id);
 
       res.status(201).json({
-        message: 'User registered successfully. Please check your email to verify your account.',
+        message: 'User registered successfully',
         accessToken,
         refreshToken,
         user: {

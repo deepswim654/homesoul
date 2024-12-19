@@ -1,13 +1,14 @@
 import { HeroSection, BentoGrid, ProcessSteps, ServiceExplanation, ServiceShowcase } from '@/components/features';
+import { PageLayout } from '@/components/ui/PageLayout';
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <PageLayout maxWidth="full" noPadding>
       <HeroSection />
       <BentoGrid />
       <ServiceExplanation />
       <ProcessSteps />
       <ServiceShowcase />
-    </div>
+    </PageLayout>
   );
 }

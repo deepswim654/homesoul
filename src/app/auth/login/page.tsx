@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
 import { authService } from '@/services/auth.service';
 import { useAuth } from '@/lib/contexts/AuthContext';
+import { PageLayout } from '@/components/ui/PageLayout';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -61,8 +62,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 py-16">
-      <div className="max-w-md w-full space-y-8 my-12 px-4 sm:px-6 lg:px-8">
+    <PageLayout maxWidth="md" className="flex items-center justify-center">
+      <div className="w-full space-y-8">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -228,7 +229,7 @@ const LoginPage = () => {
           </Link>
         </p>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

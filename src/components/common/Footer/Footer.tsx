@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FOOTER_LINKS } from '@/constants/navigation';
 import { siteConfig } from '@/config/site';
-import { FooterSection } from '@/types/features';
+import { Container } from '@/components/ui';
 
 export const Footer: FC = () => {
   return (

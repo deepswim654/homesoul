@@ -7,6 +7,7 @@ import { authService, type AuthResponse } from '@/services/auth.service';
 interface AuthContextType {
   user: AuthResponse['user'] | null;
   isLoading: boolean;
+  error: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -18,20 +19,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthResponse['user'] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     // Check for stored token and validate it
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = authService.getToken();
         if (token) {
           const response = await authService.me();
           setUser(response.user);
         }
       } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        authService.removeTokens();
       } finally {
         setIsLoading(false);
       }
@@ -41,25 +42,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await authService.login({ email, password });
-    setUser(response.user);
-    localStorage.setItem('accessToken', response.accessToken);
-    localStorage.setItem('refreshToken', response.refreshToken);
-    router.push('/');
+    try {
+      const response = await authService.login({ email, password });
+      setUser(response.user);
+      router.push('/');
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+      throw error;
+    }
   };
 
   const register = async (name: string, email: string, password: string) => {
-    const response = await authService.register({ name, email, password });
-    setUser(response.user);
-    localStorage.setItem('accessToken', response.accessToken);
-    localStorage.setItem('refreshToken', response.refreshToken);
-    router.push('/');
+    try {
+      const response = await authService.register({ name, email, password });
+      setUser(response.user);
+      router.push('/');
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+      throw error;
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    authService.removeTokens();
     router.push('/auth/login');
   };
 
@@ -69,8 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!storedRefreshToken) throw new Error('No refresh token');
 
       const response = await authService.refresh(storedRefreshToken);
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
       return response.accessToken;
     } catch (error) {
       logout();
@@ -79,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout, refreshToken }}>
+    <AuthContext.Provider value={{ user, isLoading, error, login, register, logout, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );

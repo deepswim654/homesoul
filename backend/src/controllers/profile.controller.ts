@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AppDataSource } from '../config/database';
 import { User } from '../entities/User';
 import { RequestWithUser } from '../types/auth.types';

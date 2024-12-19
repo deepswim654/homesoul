@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { NAV_ITEMS } from '@/constants/navigation';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X, User, LogOut } from 'lucide-react';
 import { OptimizedImage } from '@/components/ui/OptimizedImage';
+import { useAuth } from '@/lib/contexts/AuthContext';
 
 type NavItem = {
   readonly label: string;
@@ -20,6 +21,7 @@ type NavItem = {
 };
 
 export const Navigation: FC = () => {
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -155,40 +157,68 @@ export const Navigation: FC = () => {
             ))}
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons or User Menu */}
           <motion.div 
             className="hidden md:flex items-center space-x-4"
             style={{ scale }}
           >
-            <Link href="/auth/login">
-              <Button 
-                variant="secondary"
-                size="sm"
-                className="text-gray-700 hover:text-gray-900"
-              >
-                Log in
-              </Button>
-            </Link>
-            <Link href="/auth/signup">
-              <Button 
-                variant="primary" 
-                size="sm"
-                className="shadow-lg shadow-primary/20 hover:shadow-primary/30"
-              >
-                Get Started
-              </Button>
-            </Link>
+            {user ? (
+              <div className="relative group">
+                <button
+                  onClick={() => setOpenDropdown(openDropdown === 'user' ? null : 'user')}
+                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-300"
+                >
+                  <span>{user.name}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+
+                {openDropdown === 'user' && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1">
+                    <Link
+                      href="/profile"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Profile
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Log out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link href="/auth/login">
+                  <Button 
+                    variant="secondary"
+                    size="sm"
+                    className="text-gray-700 hover:text-gray-900"
+                  >
+                    Log in
+                  </Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button 
+                    variant="primary" 
+                    size="sm"
+                    className="shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                  >
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </motion.div>
 
           {/* Mobile menu button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn(
-              "md:hidden relative z-10 p-2 rounded-lg transition-colors duration-300",
-              isScrolled 
-                ? "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-                : "bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-            )}
+            className="md:hidden relative z-10 p-2 rounded-lg bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors duration-300"
           >
             <span className="sr-only">
               {isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -257,26 +287,41 @@ export const Navigation: FC = () => {
                     )}
                   </div>
                 ))}
-                <div className="px-4 pt-4 pb-2 space-y-2">
-                  <Link href="/auth/login" className="block w-full">
-                    <Button 
-                      variant="secondary"
-                      size="sm"
-                      className="w-full text-gray-700 hover:text-gray-900"
+                
+                {/* Mobile User Menu */}
+                {user ? (
+                  <div className="border-t border-gray-200 pt-4 mt-4">
+                    <Link
+                      href="/profile"
+                      className="flex items-center px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    >
+                      <User className="h-5 w-5 mr-2" />
+                      Profile
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="flex items-center w-full px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    >
+                      <LogOut className="h-5 w-5 mr-2" />
+                      Log out
+                    </button>
+                  </div>
+                ) : (
+                  <div className="border-t border-gray-200 pt-4 mt-4">
+                    <Link
+                      href="/auth/login"
+                      className="block px-4 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     >
                       Log in
-                    </Button>
-                  </Link>
-                  <Link href="/auth/signup" className="block w-full">
-                    <Button 
-                      variant="primary" 
-                      size="sm"
-                      className="w-full shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                    </Link>
+                    <Link
+                      href="/auth/signup"
+                      className="block px-4 py-2 text-base font-medium text-primary hover:text-primary-dark hover:bg-gray-50"
                     >
                       Get Started
-                    </Button>
-                  </Link>
-                </div>
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}
