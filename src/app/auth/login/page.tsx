@@ -34,19 +34,9 @@ const LoginPage = () => {
     
     try {
       await login(data.email, data.password);
-      
-      // If remember me is checked, store the refresh token in localStorage
-      if (data.rememberMe) {
-        localStorage.setItem('rememberMe', 'true');
-      } else {
-        localStorage.removeItem('rememberMe');
-      }
-      
-      // Get the redirect URL from query params or default to home
-      const params = new URLSearchParams(window.location.search);
-      const from = params.get('from') || '/';
-      router.push(from);
+      router.push('/profile');
     } catch (error) {
+      console.error('Login error:', error);
       setError(error instanceof Error ? error.message : 'Login failed');
     } finally {
       setIsLoading(false);
@@ -56,7 +46,9 @@ const LoginPage = () => {
   const handleGoogleLogin = async () => {
     try {
       await authService.loginWithGoogle();
+      router.push('/profile');
     } catch (error) {
+      console.error('Google login error:', error);
       setError('Google login failed. Please try again.');
     }
   };
