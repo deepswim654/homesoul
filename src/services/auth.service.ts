@@ -182,4 +182,42 @@ export const authService = {
 
     return response.json();
   },
+
+  async changeEmail(data: { newEmail: string; password: string }): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No access token');
+
+    const response = await fetch(`${API_URL}/auth/change-email`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to change email');
+    }
+  },
+
+  async changePassword(data: { currentPassword: string; newPassword: string }): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No access token');
+
+    const response = await fetch(`${API_URL}/auth/change-password`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to change password');
+    }
+  },
 }; 
