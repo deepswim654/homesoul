@@ -38,7 +38,7 @@ export const HeroSection: FC = () => {
   return (
     <section className="relative min-h-screen bg-white overflow-hidden">
       {/* Background Image Container */}
-      <div className="absolute top-0 right-0 w-full h-full left-0 hidden md:block">
+      <div className="absolute top-0 right-0 max-w-7xl mx-auto w-full h-full left-0 hidden md:block">
         <div className="relative h-full w-2/5 ml-auto">
           <Image
             src="/assets/images/hero/background.png"
@@ -53,8 +53,8 @@ export const HeroSection: FC = () => {
       </div>
 
       {/* Content Container */}
-      <div className="relative w-full h-full">
-        <div className="h-full flex flex-col justify-start md:justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto h-full">
+        <div className="h-full flex flex-col justify-start md:justify-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl relative z-10">
             {/* Badge */}
             <motion.div

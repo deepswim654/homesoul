@@ -30,10 +30,9 @@ export const PageLayout: FC<PageLayoutProps> = ({
 }) => {
   return (
     <div className={cn(
-      'min-h-[calc(100vh-5rem)]',
+      'min-h-screen',
       'bg-gray-50',
-      !noPadding && 'py-6',
-      'mt-16'
+      !noPadding && 'py-6'
     )}>
       <div className={cn(
         maxWidthClasses[maxWidth],
