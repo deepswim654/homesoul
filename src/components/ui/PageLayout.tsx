@@ -31,7 +31,7 @@ export const PageLayout: FC<PageLayoutProps> = ({
   return (
     <div className={cn(
       'min-h-screen',
-      'bg-gray-50',
+      'bg-white',
       !noPadding && 'py-6'
     )}>
       <div className={cn(

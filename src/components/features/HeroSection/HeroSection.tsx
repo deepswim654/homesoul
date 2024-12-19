@@ -36,7 +36,7 @@ HeroStats.displayName = 'HeroStats';
 
 export const HeroSection: FC = () => {
   return (
-    <section className="relative min-h-screen bg-white overflow-hidden">
+    <section className="relative min-h-screen bg-white overflow-hidden pt-20">
       {/* Background Image Container */}
       <div className="absolute top-0 right-0 max-w-7xl mx-auto w-full h-full left-0 hidden md:block">
         <div className="relative h-full w-2/5 ml-auto">
