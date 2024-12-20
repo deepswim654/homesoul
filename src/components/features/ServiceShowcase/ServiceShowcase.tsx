@@ -20,40 +20,45 @@ const ServiceRow: FC<{ service: Service; index: number }> = memo(({ service, ind
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.3, delay: index * 0.1 }}
     viewport={{ once: true, margin: "-50px" }}
-    className="group relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+    className="group relative overflow-hidden"
   >
-    <Link href={service.href} className="flex flex-col md:flex-row items-center">
-      <div className={`w-full md:w-1/3 relative h-48 md:h-40 overflow-hidden rounded-t-xl md:rounded-tr-none md:rounded-l-xl`}>
+    <Link href={service.href} className="block">
+      <div className="relative h-[400px] rounded-2xl overflow-hidden">
         <Image
           src={service.image}
           alt={`${service.title} service illustration`}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
-          quality={75}
-          priority={index < 1}
-          loading={index < 1 ? 'eager' : 'lazy'}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          quality={90}
+          priority={index < 2}
+          loading={index < 2 ? 'eager' : 'lazy'}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
-      </div>
-      
-      <div className={`w-full md:w-2/3 p-6 md:p-8 rounded-b-xl md:rounded-l-none md:rounded-r-xl`}>
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
-          <ArrowRightIcon className="w-5 h-5 text-primary transform translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
-        </div>
         
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{service.description}</p>
+        {/* Glassmorphism overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         
-        <div className="flex flex-wrap gap-2">
-          {service.features.map((feature, idx) => (
-            <span
-              key={idx}
-              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
-            >
-              {feature}
-            </span>
-          ))}
+        {/* Content */}
+        <div className="absolute inset-0 p-8 flex flex-col justify-end">
+          <div className="relative backdrop-blur-md bg-white/10 rounded-xl p-6 transform transition-all duration-300 group-hover:translate-y-0 translate-y-4">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-2xl font-bold text-white">{service.title}</h3>
+              <ArrowRightIcon className="w-5 h-5 text-white/80 transform translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+            
+            <p className="text-white/90 text-sm mb-4 line-clamp-2">{service.description}</p>
+            
+            <div className="flex flex-wrap gap-2">
+              {service.features.map((feature, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white backdrop-blur-sm"
+                >
+                  {feature}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </Link>
@@ -151,21 +156,29 @@ const services: Service[] = [
 
 const ServiceShowcase: FC = () => {
   return (
-    <section className="bg-white py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-24 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30" />
+      
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
-          className="mb-12"
+          className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Key Features</h2>
-          <p className="text-gray-600 max-w-2xl">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Our{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light">
+              Key Features
+            </span>
+          </h2>
+          <p className="text-lg text-gray-600">
             Explore our comprehensive solutions for sustainable development and green living
           </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <ServiceRow key={service.title} service={service} index={index} />
           ))}
