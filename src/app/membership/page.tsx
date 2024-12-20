@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/AuthContext';
-import { MembershipDashboard } from '@/components/features/MembershipDashboard/MembershipDashboard';
-import { ReferralSystem } from '@/components/features/ReferralSystem/ReferralSystem';
+import { MembershipDashboard } from '@/components/features/MembershipDashboard';
+import { ReferralSystem } from '@/components/features/ReferralSystem';
 import { PageLayout } from '@/components/ui/PageLayout';
 
 // Sample data - Replace with actual data from your backend
@@ -50,7 +50,7 @@ const sampleReferralStats = {
   },
 };
 
-export default function DashboardPage() {
+export default function MembershipPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
@@ -65,7 +65,7 @@ export default function DashboardPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">Loading your membership...</p>
         </div>
       </div>
     );
