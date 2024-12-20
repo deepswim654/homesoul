@@ -66,4 +66,39 @@ export const tokenService = {
     user.passwordResetTokenExpiry = undefined;
     await userRepository.save(user);
   },
+
+  async setEmailChangeToken(user: User, newEmail: string): Promise<void> {
+    user.emailChangeToken = await this.generateEmailVerificationToken();
+    user.emailChangeTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    user.pendingEmail = newEmail;
+    await userRepository.save(user);
+  },
+
+  async verifyEmailChangeToken(token: string): Promise<User | null> {
+    const user = await userRepository.findOne({
+      where: {
+        emailChangeToken: token,
+      }
+    });
+
+    if (!user || !user.emailChangeTokenExpiry || user.emailChangeTokenExpiry < new Date() || !user.pendingEmail) {
+      return null;
+    }
+
+    return user;
+  },
+
+  async applyEmailChange(user: User): Promise<void> {
+    const newEmail = user.pendingEmail;
+    if (!newEmail) {
+      throw new Error('No pending email change');
+    }
+
+    user.email = newEmail;
+    user.emailChangeToken = undefined;
+    user.emailChangeTokenExpiry = undefined;
+    user.pendingEmail = undefined;
+    user.emailVerified = true;
+    await userRepository.save(user);
+  }
 }; 

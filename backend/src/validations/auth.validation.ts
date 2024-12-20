@@ -26,16 +26,12 @@ export const forgotPasswordSchema = z.object({
 });
 
 export const resetPasswordSchema = z.object({
-  password: passwordSchema,
-  confirmPassword: z.string(),
-}).superRefine((data, ctx) => {
-  if (data.password !== data.confirmPassword) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: "Passwords don't match",
-      path: ["confirmPassword"],
-    });
-  }
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+export const changeEmailSchema = z.object({
+  newEmail: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;

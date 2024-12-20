@@ -31,6 +31,10 @@ router.post('/reset-password/:token', validateRequest(resetPasswordSchema), auth
 // Protected routes
 router.get('/me', authMiddleware, (req, res) => authController.me(req as RequestWithUser, res));
 
+// Email change routes
+router.post('/change-email', authMiddleware, authController.changeEmail.bind(authController));
+router.get('/verify-email-change/:token', authController.verifyEmailChange.bind(authController));
+
 // Google OAuth routes
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 

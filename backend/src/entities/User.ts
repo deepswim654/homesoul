@@ -49,6 +49,15 @@ export class User {
   @Column({ nullable: true })
   passwordResetTokenExpiry?: Date;
 
+  @Column({ nullable: true })
+  pendingEmail?: string;
+
+  @Column({ nullable: true })
+  emailChangeToken?: string;
+
+  @Column({ nullable: true })
+  emailChangeTokenExpiry?: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

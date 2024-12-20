@@ -85,4 +85,33 @@ export const emailService = {
       `,
     });
   },
+
+  async sendEmailChangeVerification(email: string, token: string): Promise<void> {
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email-change?token=${token}`;
+
+    await transporter.sendMail({
+      from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM_ADDRESS}>`,
+      to: email,
+      subject: 'Verify Your New Email Address',
+      html: `
+        <h1>Email Change Request</h1>
+        <p>You requested to change your email address. Click the button below to verify your new email:</p>
+        <a href="${verificationUrl}" style="
+          display: inline-block;
+          background-color: #00A171;
+          color: white;
+          padding: 12px 24px;
+          text-decoration: none;
+          border-radius: 4px;
+          margin: 16px 0;
+        ">
+          Verify New Email
+        </a>
+        <p>Or copy and paste this link into your browser:</p>
+        <p>${verificationUrl}</p>
+        <p>This link will expire in 24 hours.</p>
+        <p>If you didn't request this change, please ignore this email or contact support.</p>
+      `,
+    });
+  }
 }; 

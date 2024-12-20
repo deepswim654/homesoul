@@ -263,5 +263,72 @@ export class AuthController {
       console.error('Google callback error:', error);
       res.redirect(`${process.env.FRONTEND_URL}/auth/login?error=google_auth_failed`);
     }
+  },
+
+  async changeEmail(req: RequestWithUser, res: Response): Promise<void> {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: 'Not authenticated' });
+        return;
+      }
+
+      const { newEmail, password } = req.body;
+      const userId = req.user.userId;
+
+      // Get user with password
+      const user = await userRepository.findOne({
+        where: { id: userId },
+        select: ['id', 'email', 'password', 'name']
+      });
+
+      if (!user) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
+
+      // Validate password
+      const isValidPassword = await user.validatePassword(password);
+      if (!isValidPassword) {
+        res.status(401).json({ message: 'Invalid password' });
+        return;
+      }
+
+      // Check if new email is already taken
+      const existingUser = await userRepository.findOne({
+        where: { email: newEmail }
+      });
+      if (existingUser) {
+        res.status(400).json({ message: 'Email is already taken' });
+        return;
+      }
+
+      // Set email change token and send verification email
+      await tokenService.setEmailChangeToken(user, newEmail);
+      await emailService.sendEmailChangeVerification(newEmail, user.emailChangeToken!);
+
+      res.json({ message: 'Verification email sent to new address' });
+    } catch (error) {
+      console.error('Change email error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
+  async verifyEmailChange(req: Request, res: Response): Promise<void> {
+    try {
+      const { token } = req.params;
+
+      const user = await tokenService.verifyEmailChangeToken(token);
+      if (!user) {
+        res.status(400).json({ message: 'Invalid or expired verification token' });
+        return;
+      }
+
+      await tokenService.applyEmailChange(user);
+
+      res.json({ message: 'Email changed successfully' });
+    } catch (error) {
+      console.error('Email change verification error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
   }
 } 
