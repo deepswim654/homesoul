@@ -39,7 +39,6 @@ const membershipTiers = [
     color: 'from-gray-300/10 to-gray-400/30',
     borderColor: 'border-gray-300/20',
     buttonColor: 'bg-gray-400',
-    popular: true,
   },
   {
     name: 'Gold',
@@ -76,6 +75,7 @@ const membershipTiers = [
     color: 'from-slate-600/10 to-slate-600/30',
     borderColor: 'border-slate-600/20',
     buttonColor: 'bg-slate-600',
+    popular: true,
   },
 ];
 

@@ -75,7 +75,7 @@ export const Navigation: FC = () => {
     >
       <motion.div 
         className={cn(
-          "absolute inset-0 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm",
+          "absolute inset-0 transition-all duration-300 bg-white/70 backdrop-blur-xl border-b border-gray-100/50 shadow-sm",
         )}
         style={{ opacity: headerBackgroundOpacity }}
       />
@@ -103,7 +103,7 @@ export const Navigation: FC = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-3">
             {NAV_ITEMS.map((item: NavItem, index) => (
               <div
                 key={`nav-item-${index}`}
@@ -115,36 +115,31 @@ export const Navigation: FC = () => {
                   <Link
                     href={item.href}
                     className={cn(
-                      "relative px-4 py-2 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 transition-colors duration-300",
-                      pathname === item.href && "text-primary font-semibold"
+                      "relative px-5 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 rounded-full transition-all duration-300 hover:bg-gray-50/80",
+                      pathname === item.href && "text-primary font-semibold bg-primary/5"
                     )}
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <button
-                    className="flex items-center px-4 py-2 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 transition-colors duration-300"
+                    className="flex items-center px-5 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 rounded-full transition-all duration-300 hover:bg-gray-50/80"
                   >
                     {item.label}
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                    <ChevronDown className="ml-1.5 h-4 w-4" />
                   </button>
-                )}
-
-                {/* Invisible bridge to prevent gap */}
-                {item.children && (
-                  <div className="absolute -bottom-2 left-0 right-0 h-2 bg-transparent" />
                 )}
 
                 {/* Dropdown Menu */}
                 {item.children && openDropdown === item.label && (
                   <div className="absolute top-full left-0 w-64 pt-2">
-                    <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-black/5 overflow-hidden">
+                    <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black/5 overflow-hidden border border-gray-100/50">
                       <div className="py-1">
                         {item.children.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href || ''}
-                            className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50/80 transition-colors duration-200"
+                            className="block px-5 py-3 text-[15px] font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 transition-all duration-200"
                           >
                             {child.label}
                           </Link>
@@ -166,44 +161,44 @@ export const Navigation: FC = () => {
               <div className="relative group">
                 <button
                   onClick={() => setOpenDropdown(openDropdown === 'user' ? null : 'user')}
-                  className="flex items-center space-x-2 px-4 py-2 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 transition-colors duration-300 rounded-full hover:bg-gray-50/80"
+                  className="flex items-center space-x-2 px-5 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 transition-all duration-300 rounded-full hover:bg-gray-50/80"
                 >
                   <span>{user.name}</span>
                   <ChevronDown className="h-4 w-4" />
                 </button>
 
                 {openDropdown === 'user' && (
-                  <div className="absolute right-0 mt-2 w-56 pt-2">
-                    <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-lg ring-1 ring-black/5 overflow-hidden">
-                      <div className="p-1.5">
+                  <div className="absolute right-0 mt-2 w-64 pt-2">
+                    <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg ring-1 ring-black/5 overflow-hidden border border-gray-100/50">
+                      <div className="p-2">
                         <Link
                           href="/membership"
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                          className="flex items-center w-full px-4 py-3 text-[15px] text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                         >
-                          <Crown className="h-4 w-4 mr-2 text-primary" />
+                          <Crown className="h-4 w-4 mr-3 text-primary" />
                           <div>
-                            <span className="font-medium">Membership</span>
-                            <p className="text-xs text-gray-500 mt-0.5">View your benefits & rewards</p>
+                            <span className="font-semibold">Membership</span>
+                            <p className="text-[13px] text-gray-500 mt-0.5">View your benefits & rewards</p>
                           </div>
                         </Link>
                         <Link
                           href="/profile"
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                          className="flex items-center w-full px-4 py-3 text-[15px] text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                         >
-                          <User className="h-4 w-4 mr-2 text-gray-500" />
+                          <User className="h-4 w-4 mr-3 text-gray-500" />
                           <div>
-                            <span className="font-medium">Profile</span>
-                            <p className="text-xs text-gray-500 mt-0.5">Manage your account</p>
+                            <span className="font-semibold">Profile</span>
+                            <p className="text-[13px] text-gray-500 mt-0.5">Manage your account</p>
                           </div>
                         </Link>
                         <button
                           onClick={logout}
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50/80 rounded-lg transition-colors duration-200"
+                          className="flex items-center w-full px-4 py-3 text-[15px] text-red-500 hover:text-red-600 hover:bg-red-50/80 rounded-xl transition-all duration-200"
                         >
-                          <LogOut className="h-4 w-4 mr-2" />
+                          <LogOut className="h-4 w-4 mr-3" />
                           <div>
-                            <span className="font-medium">Log out</span>
-                            <p className="text-xs text-red-400 mt-0.5">Sign out of your account</p>
+                            <span className="font-semibold">Log out</span>
+                            <p className="text-[13px] text-red-400 mt-0.5">Sign out of your account</p>
                           </div>
                         </button>
                       </div>
@@ -217,7 +212,7 @@ export const Navigation: FC = () => {
                   <Button 
                     variant="secondary"
                     size="sm"
-                    className="text-gray-700 hover:text-gray-900 font-medium"
+                    className="text-gray-600 hover:text-gray-900 font-medium px-6 text-[15px]"
                   >
                     Log in
                   </Button>
@@ -226,7 +221,7 @@ export const Navigation: FC = () => {
                   <Button 
                     variant="primary" 
                     size="sm"
-                    className="shadow-lg shadow-primary/20 hover:shadow-primary/30 font-medium"
+                    className="shadow-lg shadow-primary/20 hover:shadow-primary/30 font-semibold px-6 text-[15px]"
                   >
                     Get Started
                   </Button>
@@ -238,7 +233,7 @@ export const Navigation: FC = () => {
           {/* Mobile menu button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-10 p-2 rounded-lg bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors duration-300"
+            className="md:hidden relative z-10 p-2 rounded-xl bg-gray-100/80 text-gray-600 hover:text-gray-900 hover:bg-gray-200/80 transition-all duration-300"
           >
             <span className="sr-only">
               {isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -261,7 +256,7 @@ export const Navigation: FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-white/80 backdrop-blur-md rounded-xl mt-2 shadow-lg ring-1 ring-black/5"
+              className="md:hidden bg-white/70 backdrop-blur-xl rounded-2xl mt-2 shadow-lg ring-1 ring-black/5 border border-gray-100/50"
             >
               <div className="p-4 space-y-1">
                 {NAV_ITEMS.map((item, index) => (
@@ -270,7 +265,7 @@ export const Navigation: FC = () => {
                       <Link
                         href={item.href}
                         className={cn(
-                          "block px-4 py-2.5 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200",
+                          "block px-4 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200",
                           pathname === item.href && "text-primary bg-primary/5"
                         )}
                       >
@@ -280,12 +275,12 @@ export const Navigation: FC = () => {
                       <>
                         <button
                           onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                          className="flex items-center justify-between w-full px-4 py-2.5 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                          className="flex items-center justify-between w-full px-4 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                         >
                           {item.label}
                           <ChevronDown 
                             className={cn(
-                              "ml-1 h-4 w-4 transition-transform duration-200",
+                              "ml-1.5 h-4 w-4 transition-transform duration-200",
                               openDropdown === item.label && "transform rotate-180"
                             )}
                           />
@@ -296,7 +291,7 @@ export const Navigation: FC = () => {
                               <Link
                                 key={child.href}
                                 href={child.href}
-                                className="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                                className="block px-4 py-2.5 text-[15px] text-gray-500 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                               >
                                 {child.label}
                               </Link>
@@ -310,40 +305,40 @@ export const Navigation: FC = () => {
                 
                 {/* Mobile User Menu */}
                 {user ? (
-                  <div className="border-t border-gray-100 pt-4 mt-4 space-y-1">
+                  <div className="border-t border-gray-100/50 pt-4 mt-4 space-y-1">
                     <Link
                       href="/membership"
-                      className="flex items-center px-4 py-2.5 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                      className="flex items-center px-4 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                     >
-                      <Crown className="h-5 w-5 mr-2 text-primary" />
+                      <Crown className="h-5 w-5 mr-3 text-primary" />
                       Membership
                     </Link>
                     <Link
                       href="/profile"
-                      className="flex items-center px-4 py-2.5 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                      className="flex items-center px-4 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                     >
-                      <User className="h-5 w-5 mr-2 text-gray-500" />
+                      <User className="h-5 w-5 mr-3 text-gray-500" />
                       Profile
                     </Link>
                     <button
                       onClick={logout}
-                      className="flex items-center w-full px-4 py-2.5 text-[15px] font-medium tracking-wide text-red-600 hover:bg-red-50/80 rounded-lg transition-colors duration-200"
+                      className="flex items-center w-full px-4 py-2.5 text-[16px] font-medium tracking-tight text-red-500 hover:text-red-600 hover:bg-red-50/80 rounded-xl transition-all duration-200"
                     >
-                      <LogOut className="h-5 w-5 mr-2" />
+                      <LogOut className="h-5 w-5 mr-3" />
                       Log out
                     </button>
                   </div>
                 ) : (
-                  <div className="border-t border-gray-100 pt-4 mt-4 space-y-2">
+                  <div className="border-t border-gray-100/50 pt-4 mt-4 space-y-2">
                     <Link
                       href="/auth/login"
-                      className="block px-4 py-2.5 text-[15px] font-medium tracking-wide text-gray-700 hover:text-gray-900 hover:bg-gray-50/80 rounded-lg transition-colors duration-200"
+                      className="block px-4 py-2.5 text-[16px] font-medium tracking-tight text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 rounded-xl transition-all duration-200"
                     >
                       Log in
                     </Link>
                     <Link
                       href="/auth/signup"
-                      className="block px-4 py-2.5 text-[15px] font-medium tracking-wide text-primary hover:text-primary-dark hover:bg-primary/5 rounded-lg transition-colors duration-200"
+                      className="block px-4 py-2.5 text-[16px] font-medium tracking-tight text-primary hover:text-primary-dark hover:bg-primary/5 rounded-xl transition-all duration-200"
                     >
                       Get Started
                     </Link>

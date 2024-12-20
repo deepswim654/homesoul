@@ -28,7 +28,7 @@ const ServiceRow: FC<{ service: Service; index: number }> = memo(({ service, ind
           src={service.image}
           alt={`${service.title} service illustration`}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 50vw"
           quality={90}
           priority={index < 2}
@@ -36,28 +36,17 @@ const ServiceRow: FC<{ service: Service; index: number }> = memo(({ service, ind
         />
         
         {/* Glassmorphism overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         
         {/* Content */}
         <div className="absolute inset-0 p-8 flex flex-col justify-end">
-          <div className="relative backdrop-blur-md bg-white/10 rounded-xl p-6 transform transition-all duration-300 group-hover:translate-y-0 translate-y-4">
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-2xl font-bold text-white">{service.title}</h3>
-              <ArrowRightIcon className="w-5 h-5 text-white/80 transform translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
+          <div className="relative backdrop-blur-lg bg-white/10 rounded-2xl p-8 transform transition-all duration-500 group-hover:translate-y-0 translate-y-4 border border-white/10">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-3xl font-bold text-white">{service.title}</h3>
+              <ArrowRightIcon className="w-6 h-6 text-white/90 transform translate-x-0 transition-transform duration-500 group-hover:translate-x-2" />
             </div>
             
-            <p className="text-white/90 text-sm mb-4 line-clamp-2">{service.description}</p>
-            
-            <div className="flex flex-wrap gap-2">
-              {service.features.map((feature, idx) => (
-                <span
-                  key={idx}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white backdrop-blur-sm"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
+            <p className="text-white/90 text-base leading-relaxed">{service.description}</p>
           </div>
         </div>
       </div>
@@ -73,84 +62,49 @@ const services: Service[] = [
     description: "Empowering individuals with skills and knowledge to thrive in the sustainable building and energy industry.",
     image: "/assets/images/services/academy.jpg",
     href: "/academy",
-    features: [
-      "Tailored Training Programs",
-      "Target Audience Focus",
-      "Future Generations Focus",
-      "Comprehensive Resources"
-    ]
+    features: []
   },
   {
     title: "Consulting",
     description: "Expert support for sustainable construction and renovation projects, making the process seamless and efficient.",
     image: "/assets/images/services/consulting.jpg",
     href: "/consulting",
-    features: [
-      "Project Guidance",
-      "Sustainability Expertise",
-      "Streamlined Solutions",
-      "Resource Optimization"
-    ]
+    features: []
   },
   {
     title: "Development",
     description: "Leverage technology to create safe, sustainable, and cost-effective building projects.",
     image: "/assets/images/services/development.jpg",
     href: "/development-and-construction",
-    features: [
-      "Innovative Software",
-      "Eco-Friendly Construction",
-      "On-Time Delivery",
-      "Customized Solutions"
-    ]
+    features: []
   },
   {
     title: "Materials",
     description: "Access a curated network of manufacturers offering sustainable and innovative building materials.",
     image: "/assets/images/services/materials.jpg",
     href: "/building-material-supplier",
-    features: [
-      "Eco-Friendly Materials",
-      "Smart Home Solutions",
-      "Health-Focused Products",
-      "Industry Collaboration"
-    ]
+    features: []
   },
   {
     title: "Finance",
     description: "Comprehensive financial solutions to ensure your project's success and security.",
     image: "/assets/images/services/finance.jpg",
     href: "/finance",
-    features: [
-      "Capital Raising",
-      "Secure Payments",
-      "Investment Opportunities",
-      "Financial Stability"
-    ]
+    features: []
   },
   {
     title: "Dreamers Hub",
     description: "A community-driven space for collaboration, growth, and innovation in sustainable development.",
     image: "/assets/images/services/dreamers.jpg",
     href: "/the-dreamers-hub",
-    features: [
-      "Personal Development",
-      "Collaboration Opportunities",
-      "Mentorship Programs",
-      "Innovative Culture"
-    ]
+    features: []
   },
   {
     title: "Wellbeing",
     description: "Promoting a holistic approach to sustainability by integrating health and environmental consciousness.",
     image: "/assets/images/services/wellbeing.jpg",
     href: "/wellbeing",
-    features: [
-      "Lifestyle Integration",
-      "Health-Enhancing Solutions",
-      "Community Focus",
-      "Holistic Benefits"
-    ]
+    features: []
   }
 ];
 
