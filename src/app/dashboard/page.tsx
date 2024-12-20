@@ -1,17 +1,61 @@
 'use client';
 
-import { useAuth } from '@/lib/contexts/AuthContext';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/contexts/AuthContext';
+import { MembershipDashboard } from '@/components/features/MembershipDashboard/MembershipDashboard';
+import { ReferralSystem } from '@/components/features/ReferralSystem/ReferralSystem';
+import { PageLayout } from '@/components/ui/PageLayout';
+
+// Sample data - Replace with actual data from your backend
+const sampleMembershipStats = {
+  currentTier: 'Gold' as const,
+  referralCount: 4,
+  commissionsEarned: 2500,
+  nextPaymentDate: '2024-01-15',
+  discountRate: 75,
+  platformCommission: 60,
+  salesGuarantee: 3000,
+  upcomingEvents: [
+    {
+      title: 'Q1 Industry Seminar',
+      date: '2024-01-20',
+      type: 'seminar' as const,
+    },
+    {
+      title: 'Industry Analysis Dinner',
+      date: '2024-02-15',
+      type: 'dinner' as const,
+    },
+    {
+      title: 'Sustainable Building Workshop',
+      date: '2024-03-01',
+      type: 'training' as const,
+    },
+  ],
+};
+
+const sampleReferralStats = {
+  referralCode: 'GOLD123',
+  referralLink: 'https://homesoul.com/ref/GOLD123',
+  directReferrals: 3,
+  secondLevelReferrals: 6,
+  thirdLevelReferrals: 2,
+  totalCommission: 3500,
+  upgradeProgress: 4,
+  commissionRates: {
+    directReferral: 15,
+    secondLevel: 7,
+    thirdLevel: 3,
+  },
+};
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    console.log('Dashboard page - Auth state:', { user, isLoading });
     if (!isLoading && !user) {
-      console.log('No authenticated user, redirecting to login...');
       router.push('/auth/login');
     }
   }, [user, isLoading, router]);
@@ -38,25 +82,17 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Welcome, {user.name || 'User'}!</h1>
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-medium mb-4">Your Dashboard</h2>
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-gray-600">Email:</span>
-            <span className="font-medium">{user.email}</span>
-            {user.emailVerified && (
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                Verified
-              </span>
-            )}
-          </div>
-          <p className="text-gray-600">
-            This is your personal dashboard. More features coming soon!
-          </p>
+    <PageLayout maxWidth="7xl" className="py-8">
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900">Welcome, {user.name || 'Member'}!</h1>
+          <span className="text-sm text-gray-600">Member since {new Date(user.createdAt).toLocaleDateString()}</span>
         </div>
+
+        <MembershipDashboard stats={sampleMembershipStats} />
+        
+        <ReferralSystem stats={sampleReferralStats} />
       </div>
-    </div>
+    </PageLayout>
   );
 } 

@@ -1,4 +1,4 @@
-import { HeroSection, BentoGrid, ProcessSteps, ServiceExplanation, ServiceShowcase } from '@/components/features';
+import { HeroSection, BentoGrid, ProcessSteps, ServiceExplanation, ServiceShowcase, MembershipSection } from '@/components/features';
 import { PageLayout } from '@/components/ui/PageLayout';
 
 export default function Home() {
@@ -9,6 +9,7 @@ export default function Home() {
       <ServiceExplanation />
       <ProcessSteps />
       <ServiceShowcase />
+      <MembershipSection />
     </PageLayout>
   );
 }

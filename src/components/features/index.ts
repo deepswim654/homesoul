@@ -1,5 +1,6 @@
-export * from './HeroSection/HeroSection';
-export * from './BentoGrid/BentoGrid';
-export * from './ProcessSteps';
-export * from './ServiceExplanation';
+export { HeroSection } from './HeroSection/HeroSection';
+export { BentoGrid } from './BentoGrid/BentoGrid';
+export { ProcessSteps } from './ProcessSteps/ProcessSteps';
+export { ServiceExplanation } from './ServiceExplanation/ServiceExplanation';
 export { default as ServiceShowcase } from './ServiceShowcase/ServiceShowcase';
+export { MembershipSection } from './MembershipSection';
