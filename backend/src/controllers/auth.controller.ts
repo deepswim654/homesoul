@@ -263,7 +263,7 @@ export class AuthController {
       console.error('Google callback error:', error);
       res.redirect(`${process.env.FRONTEND_URL}/auth/login?error=google_auth_failed`);
     }
-  },
+  }
 
   async changeEmail(req: RequestWithUser, res: Response): Promise<void> {
     try {
@@ -311,7 +311,7 @@ export class AuthController {
       console.error('Change email error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  },
+  }
 
   async verifyEmailChange(req: Request, res: Response): Promise<void> {
     try {
